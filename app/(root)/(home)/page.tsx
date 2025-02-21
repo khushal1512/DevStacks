@@ -6,6 +6,45 @@ import { HomePageFilters } from "@/constants/filters"
 import Link from "next/link"
 import React from "react"
 
+
+const questions = [
+  { _id: 1, 
+    title: 'Cascading Deletes in SQLAlchemy?', 
+    tags: [{ _id: 1, name: 'python'} , { _id: 2, name: 'sql'}],
+    author: 'John Doe' ,
+    upvotes: 10, 
+    views: 100, 
+    answers: 2,
+    createdAt: '2021-09-01T12:00:00.000Z'
+  },
+  { _id: 2, 
+    title: 'Cascading Deletes in Alchemy?', 
+    tags: [{ _id: 1, name: 'python'} , { _id: 2, name: 'sql'}],
+    author: 'John Do' ,
+    upvotes: 10, 
+    views: 100, 
+    answers: 2,
+    createdAt: '2021-09-01T12:00:00.000Z'
+  },
+  { _id: 3, 
+    title: 'Cascading in SQL?', 
+    tags: [{ _id: 1, name: 'python'} , { _id: 2, name: 'sql'}],
+    author: 'Jon Doe' ,
+    upvotes: 10, 
+    views: 100, 
+    answers: 2,
+    createdAt: '2021-09-01T12:00:00.000Z'
+  },
+  { _id: 4, 
+    title: 'Deletes in SQLAlchemy?', 
+    tags: [{ _id: 1, name: 'python'} , { _id: 2, name: 'sql'}],
+    author: 'Joh Doe' ,
+    upvotes: 10, 
+    views: 100, 
+    answers: 2,
+    createdAt: '2021-09-01T12:00:00.000Z'
+  }
+]
 export default function Home() {
   return (
     <>
@@ -18,7 +57,6 @@ export default function Home() {
           </Button>
         </Link>
       </div>
-
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchbar 
           route="/"
@@ -35,7 +73,9 @@ export default function Home() {
       </div>
       <HomeFilters />
 
-      <div className="mt-10 flex w-full flex-col gap-6"></div>
+      <div className="mt-10 flex w-full flex-col gap-6">
+
+      </div>
     </>
   )
 }
