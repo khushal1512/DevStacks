@@ -9,7 +9,7 @@ import Link from "next/link"
 import React from "react"
 
 
-const questions: QuestionProps[] = [
+const questions = [
   { 
     _id: "1", 
     title: "Cascading Deletes in SQLAlchemy?", 
