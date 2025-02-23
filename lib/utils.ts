@@ -10,7 +10,6 @@ export const getTimestamp = (createdAt: Date): string => {
   const now: Date = new Date();
   const timeDifference: number = now.getTime() - createdAt.getTime();
 
-  // Define time intervals in milliseconds
   const timeUnits: {
     unit: string;
     milliseconds: number;

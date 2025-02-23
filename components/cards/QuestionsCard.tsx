@@ -3,6 +3,7 @@ import { title } from "process";
 import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metrics from "../shared/Metrics";
+import { getTimestamp } from "@/lib/utils";
 
 interface QuestionProps {
   _id: string;
@@ -37,7 +38,7 @@ const QuestionsCard = ({
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
-            {String(createdAt)}
+            {getTimestamp(createdAt)}
           </span>
           <Link href={`/questions/${_id}`}>
             <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
@@ -60,7 +61,7 @@ const QuestionsCard = ({
           imgUrl="/assets/icons/avatar.svg"
           alt="user"
           value={author.name}
-          title=" - asked 1 hour ago"
+          title={` - asked ${getTimestamp(createdAt)}`}
           href={`/profile/${author._id}`}
           isAuthor="true"
           textStyles="small-medium text-dark400_light700"
