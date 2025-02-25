@@ -39,6 +39,11 @@ const Question = () => {
     console.log(values);
   }
 
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: any ) => {
+    if(e.key === 'Enter' && field.name === 'tags') {
+      e.preventDefault(); 
+    }
+  }
   return (
     <Form {...form}>
       <form
@@ -137,7 +142,7 @@ const Question = () => {
                 <Input
                   className="no-focus paragraph-regular background-light900_dark300 light-border-2 test-dark300_light700 m-h-[56px] border"
                   placeholder="Add Tags..."
-                  {...field}
+                  onKeyDown={(e) => handleInputKeyDown(e, field)}
                 />
               </FormControl>
               <FormDescription className="body-regular text mt-2.5 text-light-500">
