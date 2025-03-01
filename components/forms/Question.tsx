@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,8 +21,11 @@ import { isGeneratorObject } from "util/types";
 import { Badge } from "lucide-react";
 import Image from "next/image";
 
+const type: any = 'create'
 const Question = () => {
+  
   const editorRef = useRef(null);
+  const [isSubmitting, setisSubmitting] = useState(false);
   // const log = () => {
   //   if (editorRef.current) {
   //     console.log(editorRef.current.getContent());
@@ -38,7 +41,16 @@ const Question = () => {
   });
 
   function onSubmit(values: z.infer<typeof QuestionsSchema>) {
-    console.log(values);
+    setisSubmitting(true);
+    try {
+      // make async call to API -> create a question 
+      // navigate to home page to view question posted 
+      
+    } catch (error) {
+      
+    } finally {
+      setisSubmitting(false); 
+    }
   }
 
   const handleInputKeyDown = (
@@ -202,7 +214,19 @@ const Question = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="primary-gradient w-fit !text-light-900 disabled={isSubmitting}">
+          {
+            isSubmitting ? (
+              <>
+                {type === 'edit' ? 'Editing...' : 'Posting...'}
+              </>
+            ) : (
+              <>
+                {type === 'edit' ? 'Edit Question' : 'Ask Question'}
+              </>
+            )
+          }
+        </Button>
       </form>
     </Form>
   );
