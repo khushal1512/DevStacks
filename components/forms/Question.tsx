@@ -18,6 +18,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { QuestionsSchema } from "@/lib/validations";
 import { isGeneratorObject } from "util/types";
+import { Badge } from "lucide-react";
+import Image from "next/image";
 
 const Question = () => {
   const editorRef = useRef(null);
@@ -39,10 +41,38 @@ const Question = () => {
     console.log(values);
   }
 
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: any ) => {
-    if(e.key === 'Enter' && field.name === 'tags') {
-      e.preventDefault(); 
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: any
+  ) => {
+    if (e.key === "Enter" && field.name === "tags") {
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagvalue = tagInput.value.trim();
+
+      if (tagvalue !== "") {
+        if (tagvalue.length > 15) {
+          return form.setError("tags", {
+            type: "required",
+            message: "Tag must be less than 15 characters",
+          });
+        }
+
+        if (!field.value.includes(tagvalue as never)) {
+          form.setValue("tags", [...field.value, tagvalue]);
+          tagInput.value = "";
+          form.clearErrors("tags");
+        }
+      } else {
+        form.trigger();
+      }
     }
+  };
+
+  const handleTagRemove = (tag: string , field: any) =>{ 
+    const newTags = field.value.filter((t: string) => t !== tag);
+     form.setValue('tags' ,newTags);
   }
   return (
     <Form {...form}>
@@ -84,13 +114,14 @@ const Question = () => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Editor
-                apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                   tinymceScriptSrc={
                     process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"
                   }
-                  onInit={(evt, editor) => (
+                  onInit={(evt, editor) =>
                     // @ts-ignore
-                    editorRef.current = editor)}
+                    (editorRef.current = editor)
+                  }
                   initialValue=""
                   init={{
                     height: 350,
@@ -113,11 +144,11 @@ const Question = () => {
                       "preview",
                     ],
                     toolbar:
-                      "undo redo | blocks | " + 'codesample' +
+                      "undo redo | blocks | " +
+                      "codesample" +
                       "bold italic forecolor | alignleft aligncenter " +
                       "alignright alignjustify | bullist numlist outdent indent | ",
-                    content_style:
-                      "body { font-family:Inter; font-size:16px }",
+                    content_style: "body { font-family:Inter; font-size:16px }",
                   }}
                 />
               </FormControl>
@@ -139,11 +170,29 @@ const Question = () => {
                 Tags <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
-                <Input
-                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 test-dark300_light700 m-h-[56px] border"
-                  placeholder="Add Tags..."
-                  onKeyDown={(e) => handleInputKeyDown(e, field)}
-                />
+                <>
+                  <Input
+                    className="no-focus paragraph-regular background-light900_dark300 light-border-2 test-dark300_light700 m-h-[56px] border"
+                    placeholder="Add Tags..."
+                    onKeyDown={(e) => handleInputKeyDown(e, field)}
+                  />
+                  {field.value.length > 0 && (
+                    <div className="flex-start mt-2.5 gap-2.5">
+                      {field.value.map((tag: any) => (
+                        <Badge key={tag} className="suble-medium background-light800_dark300 text-light400_light500 flex items-center gap-2 rounded-md border-none px-4 py-2 capitalize"
+                        onClick={() => handleTagRemove(tag, field)}>
+                          {tag}
+                          <Image
+                            src="/assets/icons/close.svg/"
+                            alt="close icon"
+                            width={12}
+                            height={12}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </>
               </FormControl>
               <FormDescription className="body-regular text mt-2.5 text-light-500">
                 Add upto 3 tags to describe what your question is about. You
