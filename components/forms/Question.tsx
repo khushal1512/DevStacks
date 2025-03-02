@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { boolean, z } from "zod";
 import { Button } from "@/components/ui/button";
+import { useRouter, usePathname } from 'next/navigation'; 
 import {
   Form,
   FormControl,
@@ -20,10 +21,15 @@ import { QuestionsSchema } from "@/lib/validations";
 import { isGeneratorObject } from "util/types";
 import { Badge } from "lucide-react";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const type: any = 'create'
-const Question = () => {
-  
+interface Props {
+  mongoUserId: string; 
+}
+const Question = ( {mongoUserId} : Props) => {
+  const router = useRouter(); 
+  const pathname = usePathname(); 
   const editorRef = useRef(null);
   const [isSubmitting, setisSubmitting] = useState(false);
   // const log = () => {
@@ -40,12 +46,19 @@ const Question = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
     setisSubmitting(true);
     try {
       // make async call to API -> create a question 
       // navigate to home page to view question posted 
-      
+      await createQuestion({
+        title: values.title, 
+        content: values.explanation, 
+        tags: values.tags, 
+        author: JSON.parse(mongoUserId),
+      }); 
+
+      router.push('/');
     } catch (error) {
       
     } finally {
@@ -132,8 +145,10 @@ const Question = () => {
                   }
                   onInit={(evt, editor) =>
                     // @ts-ignore
-                    (editorRef.current = editor)
+                    editorRef.current = editor
                   }
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => field.onChange(content)}
                   initialValue=""
                   init={{
                     height: 350,
