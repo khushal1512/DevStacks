@@ -17,7 +17,7 @@ export async function createQuestion(params: any) {
       author,
     });
 
-    const tagDocuments = [];
+    const tagDocuments: any[] = [];
 
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
@@ -25,9 +25,17 @@ export async function createQuestion(params: any) {
         { $setOnInsert: { name: tag }, $push: { question: question._id } },
         { upsert: true, new: true }
       );
-      tagDocuments.push(existingTag._id, {
-        $push: { tags: { $each: tagDocuments } },
-      });
+      tagDocuments.push(existingTag._id);
     }
+
+    await Question.findByIdAndUpdate(question._id, {
+      $push: { tags: { $each: tagDocuments } },
+    });
+
+    //create an interaction record for the users ask_question action 
+    // increment authors reputation by +5 for a question creation
+
+    
+
   } catch (error) {}
 }
