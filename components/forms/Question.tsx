@@ -52,10 +52,11 @@ const Question = ( {mongoUserId} : Props) => {
       // make async call to API -> create a question 
       // navigate to home page to view question posted 
       await createQuestion({
-        title: values.title, 
-        content: values.explanation, 
-        tags: values.tags, 
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path: pathname,
       }); 
 
       router.push('/');
