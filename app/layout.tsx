@@ -37,6 +37,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         <ClerkProvider
+        signInUrl="/sign-in"
+        signUpUrl="/sign-up"
+        tokenCache={false} 
           appearance={{
             elements: {
               formButtonPrimary: "primary-gradient",
