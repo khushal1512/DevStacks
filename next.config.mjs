@@ -4,12 +4,9 @@ const nextConfig = {
         serverActions: true,
         mdxRs: true,
         serverComponentsExternalPackages: ['mongoose'],
-    }
-};
-module.exports = {
-    eslint: {
-      ignoreDuringBuilds: true,
     },
-  };
-
+    eslint: {
+        ignoreDuringBuilds: true,
+      },
+};
 export default nextConfig;
