@@ -39,7 +39,7 @@ export default function RootLayout({
         <ClerkProvider
         signInUrl="/sign-in"
         signUpUrl="/sign-up"
-        tokenCache={false} 
+        // tokenCache={false} 
           appearance={{
             elements: {
               formButtonPrimary: "primary-gradient",
