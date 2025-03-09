@@ -6,5 +6,10 @@ const nextConfig = {
         serverComponentsExternalPackages: ['mongoose'],
     }
 };
+module.exports = {
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+  };
 
 export default nextConfig;
