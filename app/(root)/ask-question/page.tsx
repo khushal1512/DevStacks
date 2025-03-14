@@ -1,19 +1,19 @@
 import Question from '@/components/forms/Question'
 import React from 'react'
-// import  auth  from "@clerk/nextjs"
+import  { auth }  from "@clerk/nextjs/server"
 import { redirect } from 'next/navigation';
 import { getUserById } from '@/lib/actions/user.action';
 
 
 const page = async () => {
 
-  // const { userId } = auth(); 
-  const userId= '65fbd1f47a123456789abcd1'
+  const { userId } = await auth(); 
+  // const userId= '65fbd1f47a123456789abcd1'
   if(!userId) redirect('/sign-in'); 
 
   const mongoUser = await getUserById( { userId}); 
 
-  console.log(mongoUser);
+  // console.log(mongoUser);
   return (
     <div>
       <h1 className='h1-bold text-dark100_light900'>
