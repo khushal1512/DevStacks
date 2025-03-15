@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import ParseHTML from "@/components/shared/ParseHTML";
+import RenderTag from "@/components/shared/RenderTag";
 const Page = async ({ params }) => {
   console.log(params);
 
