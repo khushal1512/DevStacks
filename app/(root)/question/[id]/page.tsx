@@ -67,6 +67,7 @@ const Page = async ({ params }) => {
             <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
           ))}
         </div>
+        </div>
     </>
   );
 };
