@@ -22,7 +22,16 @@ const Answer = () => {
         }
     })
 
-    const handleCreateAnswer = (data) => {
+    const handleCreateAnswer = () => {
+      setisSubmitting(true); 
+       
+      try {
+        
+      } catch (error) {
+        
+      } finally {
+        setisSubmitting(false);
+      }
     }
   return (
     <div>
@@ -38,7 +47,7 @@ const Answer = () => {
             className={`object-contain`}
             />
             { isSubmitting ? 'Generating' : 'Generate Answer'}
-            <Button/>
+            </Button>
       </div>
     <Form {...form}>
         <form 
