@@ -69,6 +69,8 @@ const Page = async ({ params }) => {
           ))}
         </div>
         </div>
+
+        <Answer/>
     </>
   );
 };

@@ -68,7 +68,7 @@ const QuestionsCard = ({
         />
 
         <Metrics
-          imgUrl="/assets/icons/like.svg"
+          imgUrl={author.picture}
           alt="Upvotes"
           value={upvotes}
           title="Votes"
