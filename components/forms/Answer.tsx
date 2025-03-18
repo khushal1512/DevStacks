@@ -2,31 +2,52 @@ import React, { useState } from 'react'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { AnswerSchema } from '@/lib/validations'
+import { AnswerValidation } from '@/lib/validations'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Editor } from '@tinymce/tinymce-react'
 import { useTheme } from '@/context/ThemeProvider'
 import { Button } from '../ui/button'
 import Image from 'next/image'
+import { createAnswer } from '@/lib/actions/answer.action'
+import { usePathname } from 'next/navigation'
 
-
-
-const Answer = () => {
+interface Props {
+  question: string; 
+  questionId: string; 
+  authorId: string;
+}
+const Answer = ( { question, questionId, authorId} : Props) => {
+    const pathname = usePathname();
     const [ isSubmitting, setisSubmitting] = useState(false); 
     const {mode} = useTheme();
     const editorRef = React.useRef(null)
-    const form = useForm<z.infer<typeof AnswerSchema>>({
-        resolver: zodResolver(AnswerSchema),
+
+    const form = useForm<z.infer<typeof AnswerValidation>>({
+        resolver: zodResolver(AnswerValidation),
         defaultValues: {
             answer: ''
         }
     })
 
-    const handleCreateAnswer = () => {
+    const handleCreateAnswer = async () => {
       setisSubmitting(true); 
        
       try {
-        
+        await createAnswer({
+          content: values.answer,
+          author: JSON.parse(authorId),
+          question: JSON.parse(questionId),
+          path: pathname,
+        });
+
+        form.reset(); 
+
+        if(editorRef.current) {
+          const editor = editorRef.current as any; 
+
+          editor.setContent(''); 
+
+        }
       } catch (error) {
         
       } finally {
@@ -108,7 +129,7 @@ const Answer = () => {
         />
         <div className="flex justify-end">
           <Button
-          type='button'
+          type='submit'
           className='priamry-gradient w-fit text-white'
           disabled={isSubmitting}
           >
