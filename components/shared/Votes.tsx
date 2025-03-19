@@ -1,5 +1,15 @@
 import React from 'react'
 
+
+
+interface Props extends UserId, Voting {
+    type: string;
+    itemId: string;
+    upvotes: number;
+    downvotes: number;
+    hasSaved?: boolean;
+  }
+  
 const Votes = ({
     type,
     itemId,
