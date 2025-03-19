@@ -4,7 +4,7 @@ import User from "@/database/user.model";
 import Question from "@/database/question.model";
 import { connectToDatabase } from "../mongoose";
 import Tag from "@/database/tag.model";
-import { CreateQuestionParams, GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
+import { CreateQuestionParams, GetQuestionByIdParams, GetQuestionsParams, QuestionVoteParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 
 export async function getQuestions(params: GetQuestionsParams) {
@@ -112,6 +112,55 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       // increment author's reputation by +S for upvoting/revoking an upvote to the question (S = 10)
       await User.findByIdAndUpdate(question.author, {
         $inc: { reputation: hasupVoted ? -10 : 10 },
+      });
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+
+export async function downvoteQuestion(params: QuestionVoteParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+      };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
+      };
+    } else {
+      updateQuery = { $addToSet: { downvotes: userId } };
+    }
+
+    const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
+      new: true,
+    });
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    if (userId !== question.author.toString()) {
+      // decrement user's reputation by +S for downvoting/revoking an downvote to the question (S = 1)
+      await User.findByIdAndUpdate(userId, {
+        $inc: { reputation: hasdownVoted ? 2 : -2 },
+      });
+
+      // decrement author's reputation by +S for downvoting/revoking an downvote to the question (S = 10)
+      await User.findByIdAndUpdate(question.author, {
+        $inc: { reputation: hasdownVoted ? -10 : 10 },
       });
     }
 
