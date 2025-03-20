@@ -1,5 +1,9 @@
 import React from 'react'
-
+import Image from 'next/image';
+import { getFormattedNumber } from '@/lib/utils';
+import { UserId, Voting } from '@/lib/actions/shared.types';
+import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.action';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 interface Props extends UserId, Voting {
@@ -9,7 +13,7 @@ interface Props extends UserId, Voting {
     downvotes: number;
     hasSaved?: boolean;
   }
-  
+
 const Votes = ({
     type,
     itemId,
@@ -20,6 +24,53 @@ const Votes = ({
     hasdownVoted,
     hasSaved,
   }: Props) => {
+    const router = useRouter();
+    const pathname = usePathname();
+  const handleVote = async (action: string) => {
+      if (!userId) {
+        return new Error("Cannot upvote")
+      }
+  
+      if (action === "upvote") {
+        if (type === "Question") {
+          await upvoteQuestion({
+            questionId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasupVoted,
+            hasdownVoted,
+            path: pathname,
+          });
+        } else if (type === "Answer") {
+          await upvoteAnswer({
+            answerId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasupVoted,
+            hasdownVoted,
+            path: pathname,
+          });
+        }
+      }
+  
+      if (action === "downvote") {
+        if (type === "Question") {
+          await downvoteQuestion({
+            questionId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasupVoted,
+            hasdownVoted,
+            path: pathname,
+          });
+        } else if (type === "Answer") {
+          await downvoteAnswer({
+            answerId: JSON.parse(itemId),
+            userId: JSON.parse(userId),
+            hasupVoted,
+            hasdownVoted,
+            path: pathname,
+          });
+        }
+      }
+    };
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
@@ -85,3 +136,11 @@ const Votes = ({
 }
 
 export default Votes
+
+function downvoteAnswer(arg0: { answerId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: any; }) {
+    throw new Error('Function not implemented.');
+}
+function upvoteAnswer(arg0: { answerId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: any; }) {
+    throw new Error('Function not implemented.');
+}
+
