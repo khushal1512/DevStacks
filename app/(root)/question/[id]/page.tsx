@@ -10,6 +10,7 @@ import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import Answer from "@/components/forms/Answer";
 import AllAnswers from "@/components/shared/AllAnswers";
+import Votes from "@/components/shared/Votes";
 const Page = async ({ params }) => {
   // console.log(params);
   const { userId: clerkId} = await auth(); 
