@@ -6,11 +6,19 @@ import React from "react";
 import Image from "next/image";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
+import { getUserById } from "@/lib/actions/user.action";
+import { auth } from "@clerk/nextjs/server";
+import Answer from "@/components/forms/Answer";
+import AllAnswers from "@/components/shared/AllAnswers";
 const Page = async ({ params }) => {
-  console.log(params);
+  // console.log(params);
+  const { userId: clerkId} = await auth(); 
+  let mongoUser; 
+  if(clerkId) {
+    mongoUser = await getUserById({ userId: clerkId})
+  }
 
-  const result = await getQuestionById({ questionId: params.id });
-
+  const result = await getQuestionById({ questionId : params.id})
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -69,8 +77,15 @@ const Page = async ({ params }) => {
           ))}
         </div>
         </div>
-
-        <Answer/>
+        <AllAnswers
+          questionId={result._id}
+          userId={JSON.stringify(mongoUser._id)}
+          totalAnswers={result.answers.length}
+        />
+        <Answer question={result.content}
+        questionId={JSON.stringify(result._id)}
+        authorId={JSON.stringify(mongoUser._id)}
+        />
     </>
   );
 };

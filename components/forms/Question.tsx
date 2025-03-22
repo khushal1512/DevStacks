@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { boolean, z } from "zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from 'next/navigation'; 
 import {
@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { QuestionsSchema } from "@/lib/validations";
-import { isGeneratorObject } from "util/types";
 import { Badge } from "lucide-react";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
@@ -97,7 +96,7 @@ const Question = ( {mongoUserId} : Props) => {
       }
     }
   };
-
+  
   const handleTagRemove = (tag: string , field: any) =>{ 
     const newTags = field.value.filter((t: string) => t !== tag);
      form.setValue('tags' ,newTags);
