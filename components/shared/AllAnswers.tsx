@@ -13,6 +13,7 @@ import type {
   OptionalPage,
   OptionalFilter,
 } from "@/lib/actions/shared.types";
+import Votes from "./Votes";
 
 interface Props extends QuestionId, UserId, OptionalPage, OptionalFilter {
   totalAnswers: number;
