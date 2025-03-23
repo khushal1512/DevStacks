@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { title } from "process";
 import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metrics from "../shared/Metrics";
-import { getTimestamp } from "@/lib/utils";
+import { getFormattedNumber, getTimestamp } from "@/lib/utils";
 
 interface QuestionProps {
   _id: string;
@@ -17,7 +16,7 @@ interface QuestionProps {
     name: string;
     picture: string;
   };
-  upvotes: number;
+  upvotes: string[];
   views: number;
   answers: Array<object>;
   createdAt: Date;
@@ -70,7 +69,7 @@ const QuestionsCard = ({
         <Metrics
           imgUrl={author.picture}
           alt="Upvotes"
-          value={upvotes}
+          value={getFormattedNumber(upvotes.length)}
           title="Votes"
           textStyles="small-medium text-dark400_light800"
         />
@@ -78,7 +77,7 @@ const QuestionsCard = ({
         <Metrics
           imgUrl="/assets/icons/message.svg"
           alt="message"
-          value={upvotes}
+          value={getFormattedNumber(answers.length)}
           title="Votes"
           textStyles="small-medium text-dark400_light800"
         />
