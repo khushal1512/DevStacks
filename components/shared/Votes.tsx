@@ -29,6 +29,13 @@ const Votes = ({
     const router = useRouter();
     const pathname = usePathname();
 
+    useEffect(() => {
+      viewQuestion({
+        questionId: JSON.parse(itemId),
+        userId: userId ? JSON.parse(userId) : undefined,
+      });
+    }, [itemId, userId, pathname, router]);
+    
     const handleSave = async () => {
         await toggleSaveQuestion({
           userId: JSON.parse(userId),
