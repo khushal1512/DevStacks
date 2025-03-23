@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 
-import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 
@@ -8,6 +7,7 @@ import { getTagById, getQuestionsByTagId } from "@/lib/actions/tag.action";
 
 import type { URLProps } from "@/types";
 import type { Metadata } from "next";
+import QuestionsCard from "@/components/cards/QuestionsCard";
 
 export async function generateMetadata({
   params,
@@ -45,7 +45,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
           result.questions.map((question: any) => (
-            <QuestionCard
+            <QuestionsCard
               key={question._id}
               _id={question._id}
               clerkId={clerkId}
