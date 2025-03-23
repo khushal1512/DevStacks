@@ -1,9 +1,11 @@
+'use client'
 import React from 'react'
 import Image from 'next/image';
 import { getFormattedNumber } from '@/lib/utils';
 import { UserId, Voting } from '@/lib/actions/shared.types';
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.action';
 import { usePathname, useRouter } from 'next/navigation';
+import { toggleSaveQuestion } from '@/lib/actions/user.action';
 
 
 interface Props extends UserId, Voting {
@@ -26,6 +28,14 @@ const Votes = ({
   }: Props) => {
     const router = useRouter();
     const pathname = usePathname();
+
+    const handleSave = async () => {
+        await toggleSaveQuestion({
+          userId: JSON.parse(userId),
+          questionId: JSON.parse(itemId),
+          path: pathname,
+        });
+      };
   const handleVote = async (action: string) => {
       if (!userId) {
         return new Error("Cannot upvote")
@@ -128,7 +138,7 @@ const Votes = ({
           height={18}
           alt="star"
           className="cursor-pointer"
-          onClick={handleSave}
+          onClick={handleSave()}
         />
       )}
     </div>
