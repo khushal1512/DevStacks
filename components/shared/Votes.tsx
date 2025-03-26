@@ -1,11 +1,12 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image';
 import { getFormattedNumber } from '@/lib/utils';
 import { UserId, Voting } from '@/lib/actions/shared.types';
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { toggleSaveQuestion } from '@/lib/actions/user.action';
+import { viewQuestion } from '@/lib/actions/interaction.action';
 
 
 interface Props extends UserId, Voting {
