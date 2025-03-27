@@ -21,6 +21,28 @@ export async function getUserById(params: any) {
   }
 }
 
+ export async function getUserInfo(params: GetUserByIdParams) {
+    try {
+      connectToDatabase();
+  
+      const { userId } = params;
+  
+      const user = await User.findOne({ clerkId: userId });
+  
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return {
+        user,
+        totalQuestions,
+        totalAnswers,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
