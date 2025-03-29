@@ -2,10 +2,11 @@
 
 import { connectToDatabase } from "../mongoose";
 import User from "@/database/user.model";
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionParams, UpdateUserParams } from "./shared.types";
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionParams, GetUserByIdParams, UpdateUserParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import { FilterQuery } from "mongoose";
+import Answer from "@/database/answer.model";
 
 export async function getUserById(params: any) {
   try {
@@ -28,7 +29,10 @@ export async function getUserById(params: any) {
       const { userId } = params;
   
       const user = await User.findOne({ clerkId: userId });
-  
+
+      const totalQuestions = await Question.countDocuments({ author: user._id });
+      const totalAnswers = await Answer.countDocuments({ author: user._id });
+
       if (!user) {
         throw new Error("User not found");
       }
