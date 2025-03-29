@@ -3,6 +3,7 @@ import { connectToDatabase } from "../mongoose";
 import { GetAllTagsParams, GetQuestionByTagIdParams, GetTagByIdParams, GetTopInteractedTagsParams } from "./shared.types";
 import Tag from "@/database/tag.model";
 import Question from "@/database/question.model";
+import { FilterQuery } from "mongoose";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     try {
@@ -26,6 +27,28 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     }
   }
   
+  export async function getUserInfo(params: GetUserByIdParams) {
+    try {
+      connectToDatabase();
+  
+      const { userId } = params;
+  
+      const user = await User.findOne({ clerkId: userId });
+  
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return {
+        user,
+        totalQuestions,
+        totalAnswers,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   export async function getAllTags(params: GetAllTagsParams) {
     try {
       connectToDatabase();
