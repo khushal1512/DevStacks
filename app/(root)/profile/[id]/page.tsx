@@ -12,6 +12,9 @@ import type { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
+import { SignedIn } from "@clerk/nextjs";
+import AnswersTab from "@/components/shared/AnswersTab";
+import QuestionsTab from "@/components/shared/QuestionsTab";
 
 export async function generateMetadata({
   params,
