@@ -11,6 +11,7 @@ import type { URLProps } from "@/types";
 import type { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileLink from "@/components/shared/ProfileLink";
+import Stats from "@/components/shared/Stats";
 
 export async function generateMetadata({
   params,
