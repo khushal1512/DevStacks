@@ -64,7 +64,7 @@ const AnswerCard = ({
           title={` • asked ${getTimestamp(createdAt)}`}
           href={`/profile/${author.clerkId}`}
           textStyles="body-medium text-dark400_light700"
-          isAuthor
+          // isAuthor
         />
 
         <div className="flex-center gap-3">
