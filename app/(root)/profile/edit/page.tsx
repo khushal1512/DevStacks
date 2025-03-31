@@ -9,7 +9,7 @@ import type { ParamsProps } from "@/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Edit Profile — DevOverflow",
+  title: "Edit Profile — DevStacks",
 };
 
 const Page = async ({ params }: ParamsProps) => {

@@ -12,14 +12,54 @@ import Interaction from "@/database/interaction.model";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
-    connectToDatabase(); 
+    connectToDatabase();
 
-    const questions = await Question.find({}).populate({path: 'tags', model: Tag}).populate({ path: 'author', model: User}).sort({ createdAt: -1})
+    const { page = 1, pageSize = 10, filter, searchQuery } = params;
 
-    return { questions}; 
+    // Calculate the number of questions to skip based on the page number and page size
+    const skipAmount = (page - 1) * pageSize;
 
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          title: { $regex: new RegExp(searchQuery, "i") },
+          content: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+      default:
+        break;
+    }
+
+    const questions = await Question.find(query)
+      .populate({ path: "tags", model: Tag })
+      .populate({ path: "author", model: User })
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
+
+    const totalQuestions = await Question.countDocuments(query);
+
+    const isNext = totalQuestions > skipAmount + questions.length;
+
+    return { questions, isNext };
   } catch (error) {
-    console.log(error); 
+    console.log(error);
     throw error;
   }
 }
@@ -230,6 +270,24 @@ export async function editQuestion(params: EditQuestionParams) {
     await question.save();
 
     revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getHotQuestions() {
+  try {
+    connectToDatabase();
+
+    const hotQuestions = await Question.find({})
+      .sort({
+        views: -1,
+        upvotes: -1,
+      })
+      .limit(5);
+
+    return hotQuestions;
   } catch (error) {
     console.log(error);
     throw error;
