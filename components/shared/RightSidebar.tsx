@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import RenderTag from './RenderTag'
+import { getHotQuestions } from '@/lib/actions/question.action'
 
 
 const popularTags = [
@@ -12,15 +13,8 @@ const popularTags = [
     { _id: 5, name: 'Java' , totalQuestions: 5},
     { _id: 6, name: 'Svelte' , totalQuestions: 5},
 ]
-const RightSidebar = () => {
-
-    const hotQuestions = [
-        { _id: 1, title: 'How do I use express as a custom server in NextJS'},
-        { _id: 2, title: 'How do I use express as a custom server in NextJS'},
-        { _id: 3, title: 'How do I use express as a custom server in NextJS'},
-        { _id: 4, title: 'How do I use express as a custom server in NextJS'},
-        { _id: 5, title: 'How do I use express as a custom server in NextJS'},
-    ]
+const RightSidebar = async () => {
+    const hotQuestions = await getHotQuestions();
   return (
     <section className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 flex h-screen flex-col w-[350px] overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
         <div className="">
