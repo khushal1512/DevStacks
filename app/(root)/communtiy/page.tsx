@@ -1,13 +1,17 @@
-import UserCard from '@/components/cards/UserCard'
-import Filter from '@/components/shared/Filter'
-import NoResult from '@/components/shared/NoResult'
-import LocalSearchbar from '@/components/shared/search/LocalSearchbar'
-import { UserFilters } from '@/constants/filters'
-import { getAllUsers } from '@/lib/actions/user.action'
-import React from 'react'
+import Filter from "@/components/shared/Filter";
+import NoResult from "@/components/shared/NoResult";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import UserCard from "@/components/cards/UserCard";
+import { getAllUsers } from "@/lib/actions/user.action";
+import type { SearchParamsProps } from "@/types";
+import type { Metadata } from "next";
 
-const Page = async () => {
-    const result = await getAllUsers({});
+export const metadata: Metadata = {
+  title: "Community — DevStacks",
+};
+
+const Page = async ({ searchParams }: SearchParamsProps) => {
+    const result = await getAllUsers({searchQuery: searchParams.q});
 
   return (
     <>
