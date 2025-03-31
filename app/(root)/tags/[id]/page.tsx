@@ -15,7 +15,7 @@ export async function generateMetadata({
   const tag = await getTagById({ tagId: params.id });
 
   return {
-    title: `Posts by tag '${tag.name}' — DevOverflow`,
+    title: `Posts by tag '${tag.name}' — DevStacks`,
     description: tag.description || `Questions tagged with ${tag.name}`,
   };
 }
