@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
-import QuestionCard from "@/components/cards/QuestionCard";
+import QuestionsCard from "@/components/cards/QuestionsCard";
 
 import { getSavedQuestions, getUserById } from "@/lib/actions/user.action";
 
@@ -23,13 +23,10 @@ export default async function Collection({ searchParams }: SearchParamsProps) {
   if (!clerkId) return null;
 
   const mongoUser = await getUserById({ userId: clerkId });
-  if (!mongoUser?.onboarded) redirect("/onboarding");
 
   const result = await getSavedQuestions({
     clerkId,
     searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
   });
 
   return (
@@ -53,7 +50,7 @@ export default async function Collection({ searchParams }: SearchParamsProps) {
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
           result.questions.map((question: any) => (
-            <QuestionCard
+            <QuestionsCard
               key={question._id}
               _id={question._id}
               clerkId={clerkId}
