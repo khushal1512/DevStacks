@@ -5,6 +5,7 @@ import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.action";
 import type { SearchParamsProps } from "@/types";
 import type { Metadata } from "next";
+import { UserFilters } from "@/constants/filters";
 
 export const metadata: Metadata = {
   title: "Community — DevStacks",
